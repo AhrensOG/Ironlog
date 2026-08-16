@@ -28,6 +28,15 @@ async function main() {
     console.log(`${created ? "Created" : "Updated"} LearningContent "${row.slug}"`);
   }
 
+  const activeSlugs = new Set(learningContents.map((c) => c.slug));
+  const staleContents = await LearningContent.findAll();
+  for (const row of staleContents) {
+    if (!activeSlugs.has(row.slug)) {
+      await row.destroy();
+      console.log(`Deleted stale LearningContent "${row.slug}"`);
+    }
+  }
+
   // Catálogo de exercises (resolver grupos por name).
   const groupByName = new Map<string, MuscleGroup>();
   for (const mg of muscleGroups) {
