@@ -15,6 +15,7 @@
     "semanal": "Semanal",
     "progreso": "Progreso",
     "aprender": "Aprender",
+    "ajustes": "Ajustes",
     "salir": "Cerrar sesión"
   },
   "common": {
@@ -308,5 +309,21 @@
     "friday": "Viernes",
     "saturday": "Sábado",
     "sunday": "Domingo"
+  },
+  "ajustes": {
+    "title": "Ajustes",
+    "signedInAs": "Sesión iniciada como",
+    "changePasswordTitle": "Cambiar contraseña",
+    "changePasswordHint": "Necesitas tu contraseña actual para cambiarla. No se envían emails.",
+    "currentPassword": "Contraseña actual",
+    "newPassword": "Nueva contraseña",
+    "newPasswordHint": "Mínimo 6 caracteres",
+    "confirmPassword": "Confirmar nueva contraseña",
+    "mismatch": "Las contraseñas no coinciden",
+    "passwordChanged": "Contraseña actualizada",
+    "wrongPassword": "La contraseña actual no es correcta",
+    "invalidData": "Datos inválidos",
+    "saveError": "No se pudo guardar",
+    "save": "Guardar"
   }
 }
