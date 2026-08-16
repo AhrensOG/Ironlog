@@ -10,7 +10,7 @@ export async function GET() {
     const contents = await LearningContent.findAll({
       where: { lang: "es" },
       order: [
-        ["tipo", "ASC"],
+        ["type", "ASC"],
         ["order", "ASC"],
         ["title", "ASC"],
       ],

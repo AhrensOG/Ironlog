@@ -299,7 +299,9 @@
     "backToList": "Volver a Aprender",
     "nivel_principiante": "Principiante",
     "nivel_intermedio": "Intermedio",
-    "nivel_avanzado": "Avanzado"
+    "nivel_avanzado": "Avanzado",
+    "loadError": "No se pudo cargar el contenido.",
+    "retry": "Reintentar"
   },
   "days": {
     "monday": "Lunes",

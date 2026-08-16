@@ -27,7 +27,7 @@ const NIVEL_COLOR: Record<string, string> = {
 
 export function AprenderView() {
   const t = useTranslations("aprender");
-  const { data, isLoading } = useLearningList();
+  const { data, isLoading, error } = useLearningList();
   const [filtro, setFiltro] = useState<string>("todos");
 
   const terms = useMemo(
@@ -55,6 +55,20 @@ export function AprenderView() {
 
   if (isLoading) {
     return <AprenderSkeleton />;
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center gap-4 py-16 text-center">
+        <p className="text-muted-foreground">{t("loadError")}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="pressable rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+        >
+          {t("retry")}
+        </button>
+      </div>
+    );
   }
 
   return (
