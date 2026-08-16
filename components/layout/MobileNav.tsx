@@ -11,7 +11,9 @@ export function MobileNav() {
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-card/95 backdrop-blur md:hidden">
-      {navItems.map((item) => (
+      {navItems
+        .filter((item) => item.mobile !== false)
+        .map((item) => (
         <Link
           key={item.href}
           href={item.href}

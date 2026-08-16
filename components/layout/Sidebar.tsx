@@ -10,18 +10,27 @@ import {
   Dumbbell,
   GraduationCap,
   LogOut,
+  Settings,
   TrendingUp,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 
-export const navItems = [
+export interface NavItem {
+  href: string;
+  icon: typeof ClipboardList;
+  key: string;
+  mobile?: boolean;
+}
+
+export const navItems: NavItem[] = [
   { href: "/hoy", icon: ClipboardList, key: "hoy" },
   { href: "/rutina", icon: Dumbbell, key: "rutina" },
   { href: "/bloque", icon: CalendarRange, key: "bloque" },
   { href: "/semanal", icon: CalendarDays, key: "semanal" },
   { href: "/progreso", icon: TrendingUp, key: "progreso" },
   { href: "/aprender", icon: GraduationCap, key: "aprender" },
-] as const;
+  { href: "/ajustes", icon: Settings, key: "ajustes", mobile: false },
+];
 
 export function Sidebar({ userName }: { userName?: string | null }) {
   const t = useTranslations("nav");
@@ -57,7 +66,7 @@ export function Sidebar({ userName }: { userName?: string | null }) {
           {userName}
         </div>
         <button
-          onClick={() => signOut({ callbackUrl: "/" })}
+          onClick={() => signOut({ redirectTo: "/" })}
           className="pressable flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
           <LogOut className="h-4 w-4" />

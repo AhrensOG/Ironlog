@@ -2,7 +2,8 @@
 
 import { signOut } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import { LogOut, Moon, Sun } from "lucide-react";
+import { LogOut, Moon, Settings, Sun } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { useTheme } from "@/components/theme-provider";
 
 export function TopBar() {
@@ -27,8 +28,15 @@ export function TopBar() {
           <Sun className="hidden h-4 w-4 dark:block" />
           <Moon className="block h-4 w-4 dark:hidden" />
         </button>
+        <Link
+          href="/ajustes"
+          className="pressable flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
+          aria-label={t("ajustes")}
+        >
+          <Settings className="h-4 w-4" />
+        </Link>
         <button
-          onClick={() => signOut({ callbackUrl: "/" })}
+          onClick={() => signOut({ redirectTo: "/" })}
           className="pressable flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
           aria-label={t("salir")}
         >
