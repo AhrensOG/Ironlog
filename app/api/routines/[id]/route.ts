@@ -124,6 +124,15 @@ export async function PATCH(req: NextRequest, { params }: Params) {  try {
 
     await routine.save();
 
+    // La fecha de inicio es el ancla del bloque: si cambia, el bloque activo
+    // se re-ancla para que la semana calculada se refleje en /hoy y /bloque.
+    if (startDate !== undefined) {
+      await TrainingBlock.update(
+        { startDate },
+        { where: { routineId: routine.id, status: "active" } },
+      );
+    }
+
     return json({
       id: routine.id,
       name: routine.name,

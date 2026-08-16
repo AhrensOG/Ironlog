@@ -132,14 +132,14 @@
     "pesoBarraDiscos": "Barra + discos",
     "cargaHint": "En la unidad del tipo de peso",
     "incrementoHint": "Salto real del equipo (0 = progresar solo por reps)",
-    "startDate": "Fecha de inicio",
+    "startDate": "Inicio del bloque",
     "deleteRoutine": "Eliminar rutina",
     "confirmDeleteRoutine": "¿Eliminar \"{name}\"? Se borrarán sus ejercicios y {logs} registros de historial.",
     "routineDeleted": "Rutina eliminada",
     "cannotDeleteActive": "La rutina activa no se puede eliminar. Activa primero otra rutina.",
     "renameRoutine": "Renombrar rutina",
     "routineRenamed": "Rutina renombrada",
-    "startDateHint": "Define el inicio del bloque (afecta la semana calculada)"
+    "startDateHint": "Ancla el cálculo de la semana: al cambiarla se reajusta todo (/hoy, /bloque, RIR)."
   },
   "hoy": {
     "loading": "Cargando sesión...",
