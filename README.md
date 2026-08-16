@@ -21,7 +21,7 @@ npm run dev          # http://localhost:3000
 ```bash
 npm run lint
 npm run typecheck
-npm test             # motor de progresión + cifrado + fechas + i18n
+npm test             # motor de progresión + fechas + i18n
 ```
 
 ## Datos de ejemplo
@@ -35,15 +35,10 @@ npm test             # motor de progresión + cifrado + fechas + i18n
 
 ```bash
 # En el VPS (una vez):
-mkdir -p /var/lib/ironlog/storage /var/backups/ironlog
 git clone <repo> /root/IronLog && cd /root/IronLog
 npm install && npm run build
 pm2 start npm --name IronLog -- start
-# .env en /root/IronLog con DATABASE_URL (Postgres del VPS), AUTH_SECRET,
-# FILE_ENCRYPTION_KEY, STORAGE_PATH=/var/lib/ironlog/storage
-
-# Backups cifrados diarios (cron):
-# 30 3 * * * cd /root/IronLog && set -a && . ./.env && set +a && BACKUP_KEY=<clave> ./scripts/backup.sh
+# .env en /root/IronLog con DATABASE_URL (Postgres del VPS) y AUTH_SECRET
 ```
 
 El workflow `.github/workflows/main.yml` despliega automáticamente en cada
@@ -51,7 +46,6 @@ push a `main` (secrets: VPS_HOST, VPS_USER, VPS_SSH_KEY, VPS_PORT).
 
 ## Seguridad
 
-- Fotos de progreso (fase 2): cifrado en reposo AES-256-GCM con envelope
-  encryption (KEK en entorno + DEK por usuario), fuera del webroot, acceso
-  solo vía API autenticada. Módulo listo en `lib/crypto.ts`.
-- Backups de base de datos cifrados con AES-256 (`scripts/backup.sh`).
+- Contraseñas con hash bcrypt y sesiones JWT firmadas (AUTH_SECRET)
+- Toda la comunicación vía HTTPS en producción
+- Sin archivos sensibles en la base de datos ni en el repositorio
