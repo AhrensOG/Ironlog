@@ -4,11 +4,14 @@ import bcrypt from "bcryptjs";
 import { User } from "@/lib/models";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt", maxAge: 7 * 24 * 60 * 60 },
   // Nombre de cookie único: evita choques con otras apps Auth.js en el
   // mismo host/dominio (p. ej. Solbyt EM en localhost:3000).
   cookies: {
-    sessionToken: { name: "ironlog.session-token" },
+    sessionToken: {
+      name: "ironlog.session-token",
+      options: { httpOnly: true, sameSite: "lax", path: "/" },
+    },
   },
   pages: {
     signIn: "/login",

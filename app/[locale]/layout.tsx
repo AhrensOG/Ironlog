@@ -18,6 +18,33 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SPLASH_DEVICES = [
+  { w: 375, h: 667, dpr: 2 }, // iPhone SE / 8
+  { w: 414, h: 896, dpr: 2 }, // iPhone 11 / XR
+  { w: 360, h: 780, dpr: 3 }, // iPhone 12/13 mini
+  { w: 375, h: 812, dpr: 3 }, // iPhone X / XS / 11 Pro
+  { w: 390, h: 844, dpr: 3 }, // iPhone 12 / 13 / 14
+  { w: 393, h: 852, dpr: 3 }, // iPhone 14 Pro / 15 / 16
+  { w: 430, h: 932, dpr: 3 }, // iPhone 14/15/16 Pro Max
+  { w: 768, h: 1024, dpr: 2 }, // iPad
+  { w: 1024, h: 1366, dpr: 2 }, // iPad Pro 12.9
+];
+
+const startupImages: Array<{ url: string; media: string }> = [];
+for (const { w, h, dpr } of SPLASH_DEVICES) {
+  const pxW = w * dpr;
+  const pxH = h * dpr;
+  const base = `(device-width: ${w}px) and (device-height: ${h}px) and (-webkit-device-pixel-ratio: ${dpr}) and (orientation: portrait)`;
+  startupImages.push({
+    url: `/splash/splash-${pxW}x${pxH}-light.png`,
+    media: base,
+  });
+  startupImages.push({
+    url: `/splash/splash-${pxW}x${pxH}-dark.png`,
+    media: `${base} and (prefers-color-scheme: dark)`,
+  });
+}
+
 export const metadata: Metadata = {
   title: "IronLog",
   description: "Registra tu entrenamiento y progresa con evidencia científica.",
@@ -31,11 +58,15 @@ export const metadata: Metadata = {
   appleWebApp: {
     title: "IronLog",
     statusBarStyle: "default",
+    startupImage: startupImages,
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ea580c",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fff7ed" },
+    { media: "(prefers-color-scheme: dark)", color: "#292524" },
+  ],
 };
 
 const themeInitScript = `
