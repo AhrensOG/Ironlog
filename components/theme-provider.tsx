@@ -20,6 +20,17 @@ const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 const STORAGE_KEY = "ironlog-theme";
 
+const THEME_COLORS: Record<Theme, string> = {
+  dark: "#292524",
+  light: "#fff7ed",
+};
+
+function syncThemeColor(theme: Theme) {
+  document
+    .querySelectorAll('meta[name="theme-color"]')
+    .forEach((el) => el.setAttribute("content", THEME_COLORS[theme]));
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window === "undefined") return "dark";
@@ -34,6 +45,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       root.classList.remove("dark");
     }
     window.localStorage.setItem(STORAGE_KEY, theme);
+    syncThemeColor(theme);
   }, [theme]);
 
   const toggleTheme = () => setThemeState((t) => (t === "dark" ? "light" : "dark"));

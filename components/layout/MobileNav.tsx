@@ -10,7 +10,7 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-card/95 backdrop-blur md:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-card/95 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] backdrop-blur md:hidden">
       {navItems
         .filter((item) => item.mobile !== false)
         .map((item) => (
