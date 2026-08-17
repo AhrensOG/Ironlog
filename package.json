@@ -9,7 +9,8 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "tsx --env-file=.env --test tests/*.test.ts",
-    "db:seed": "tsx --env-file=.env scripts/seed.ts"
+    "db:seed": "tsx --env-file=.env scripts/seed.ts",
+    "icons": "tsx scripts/generate-icons.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -37,6 +38,7 @@
     "@types/react-dom": "^19.2.4",
     "eslint": "^9",
     "eslint-config-next": "16.3.1",
+    "sharp": "^0.35.3",
     "tailwindcss": "^4",
     "tsx": "^4.23.12",
     "typescript": "^5"
