@@ -58,13 +58,13 @@ export interface RoutineDetail {
 }
 
 export function useRoutines() {
-  return useSWR<RoutineSummary[]>("/api/routines");
+  return useSWR<RoutineSummary[]>("/api/routines", { keepPreviousData: true });
 }
 
 export function useRoutineDetail(id: string | null) {
-  return useSWR<RoutineDetail>(id ? `/api/routines/${id}` : null);
+  return useSWR<RoutineDetail>(id ? `/api/routines/${id}` : null, { keepPreviousData: true });
 }
 
 export function useMuscleGroups() {
-  return useSWR<MuscleGroupRes[]>("/api/muscle-groups");
+  return useSWR<MuscleGroupRes[]>("/api/muscle-groups", { keepPreviousData: true });
 }

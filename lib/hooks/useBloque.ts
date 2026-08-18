@@ -35,5 +35,5 @@ export interface BlockRes {
 }
 
 export function useBloque() {
-  return useSWR<BlockRes>("/api/blocks/current");
+  return useSWR<BlockRes>("/api/blocks/current", { keepPreviousData: true });
 }

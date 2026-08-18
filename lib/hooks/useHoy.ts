@@ -75,5 +75,5 @@ export function useToday(date: string, routineDay: number | null) {
   const query = new URLSearchParams({ date });
   if (routineDay) query.set("routineDay", String(routineDay));
   const key = `/api/session/today?${query.toString()}`;
-  return useSWR<TodayRes>(key);
+  return useSWR<TodayRes>(key, { keepPreviousData: true });
 }

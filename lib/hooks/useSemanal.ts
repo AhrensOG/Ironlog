@@ -40,5 +40,8 @@ export interface WeeklyRes {
 }
 
 export function useSemanal(date: string) {
-  return useSWR<WeeklyRes>(`/api/summary/week?date = ${ date }`);
+  const query = new URLSearchParams({ date });
+  return useSWR<WeeklyRes>(`/api/summary/week?${query.toString()}`, {
+    keepPreviousData: true,
+  });
 }

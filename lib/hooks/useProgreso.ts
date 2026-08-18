@@ -49,19 +49,20 @@ export interface EventRes {
 }
 
 export function useProgressSummary() {
-  return useSWR<ProgressSummary>("/api/progress");
+  return useSWR<ProgressSummary>("/api/progress", { keepPreviousData: true });
 }
 
 export function useProgressDetail(exerciseId: string | null) {
   return useSWR<ProgressDetail>(
     exerciseId ? `/api/progress?exerciseId=${exerciseId}` : null,
+    { keepPreviousData: true },
   );
 }
 
 export function useBodyWeight() {
-  return useSWR<BodyWeightRes[]>("/api/body-weight");
+  return useSWR<BodyWeightRes[]>("/api/body-weight", { keepPreviousData: true });
 }
 
 export function useEventos() {
-  return useSWR<EventRes[]>("/api/events");
+  return useSWR<EventRes[]>("/api/events", { keepPreviousData: true });
 }

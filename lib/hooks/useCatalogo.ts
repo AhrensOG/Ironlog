@@ -12,5 +12,5 @@ export interface CatalogItem {
 
 export function useExerciseCatalog(grupoId?: string | null) {
   const q = grupoId ? `?muscleGroupId=${grupoId}` : "";
-  return useSWR<CatalogItem[]>(`/api/exercise-catalog${q}`);
+  return useSWR<CatalogItem[]>(`/api/exercise-catalog${q}`, { keepPreviousData: true });
 }

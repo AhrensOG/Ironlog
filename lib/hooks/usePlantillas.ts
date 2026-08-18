@@ -17,5 +17,5 @@ export interface TemplateRes {
 }
 
 export function useTemplates() {
-  return useSWR<TemplateRes[]>("/api/templates");
+  return useSWR<TemplateRes[]>("/api/templates", { keepPreviousData: true });
 }

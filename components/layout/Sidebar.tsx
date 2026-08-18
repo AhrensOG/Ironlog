@@ -1,6 +1,6 @@
 "use client";
 
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import {
@@ -32,9 +32,11 @@ export const navItems: NavItem[] = [
   { href: "/ajustes", icon: Settings, key: "ajustes", mobile: false },
 ];
 
-export function Sidebar({ userName }: { userName?: string | null }) {
+export function Sidebar() {
   const t = useTranslations("nav");
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const userName = session?.user?.name ?? null;
 
   return (
     <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col border-r border-border bg-card md:flex">
@@ -50,7 +52,7 @@ export function Sidebar({ userName }: { userName?: string | null }) {
             key={item.href}
             href={item.href}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              "pressable flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
               pathname.startsWith(item.href)
                 ? "bg-primary/10 text-primary"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground",

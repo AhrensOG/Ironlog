@@ -15,9 +15,9 @@ export interface LearningDetail extends LearningSummary {
 }
 
 export function useLearningList() {
-  return useSWR<LearningSummary[]>("/api/learning");
+  return useSWR<LearningSummary[]>("/api/learning", { keepPreviousData: true });
 }
 
 export function useLearningDetail(slug: string | null) {
-  return useSWR<LearningDetail>(slug ? `/api/learning/${slug}` : null);
+  return useSWR<LearningDetail>(slug ? `/api/learning/${slug}` : null, { keepPreviousData: true });
 }
