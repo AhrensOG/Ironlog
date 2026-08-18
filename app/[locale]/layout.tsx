@@ -6,6 +6,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Providers } from "@/components/providers";
+import { SplashScreen } from "@/components/SplashScreen";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -17,33 +18,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-const SPLASH_DEVICES = [
-  { w: 375, h: 667, dpr: 2 }, // iPhone SE / 8
-  { w: 414, h: 896, dpr: 2 }, // iPhone 11 / XR
-  { w: 360, h: 780, dpr: 3 }, // iPhone 12/13 mini
-  { w: 375, h: 812, dpr: 3 }, // iPhone X / XS / 11 Pro
-  { w: 390, h: 844, dpr: 3 }, // iPhone 12 / 13 / 14
-  { w: 393, h: 852, dpr: 3 }, // iPhone 14 Pro / 15 / 16
-  { w: 430, h: 932, dpr: 3 }, // iPhone 14/15/16 Pro Max
-  { w: 768, h: 1024, dpr: 2 }, // iPad
-  { w: 1024, h: 1366, dpr: 2 }, // iPad Pro 12.9
-];
-
-const startupImages: Array<{ url: string; media: string }> = [];
-for (const { w, h, dpr } of SPLASH_DEVICES) {
-  const pxW = w * dpr;
-  const pxH = h * dpr;
-  const base = `(device-width: ${w}px) and (device-height: ${h}px) and (-webkit-device-pixel-ratio: ${dpr}) and (orientation: portrait)`;
-  startupImages.push({
-    url: `/splash/splash-${pxW}x${pxH}-light.png`,
-    media: base,
-  });
-  startupImages.push({
-    url: `/splash/splash-${pxW}x${pxH}-dark.png`,
-    media: `${base} and (prefers-color-scheme: dark)`,
-  });
-}
 
 export const metadata: Metadata = {
   title: "IronLog",
@@ -58,7 +32,6 @@ export const metadata: Metadata = {
   appleWebApp: {
     title: "IronLog",
     statusBarStyle: "default",
-    startupImage: startupImages,
   },
 };
 
@@ -81,6 +54,25 @@ const themeInitScript = `
 })();
 `;
 
+const criticalSplashCss = `
+html { background: #0c0a09; }
+html:not(.dark) { background: #fff7ed; }
+body { background: transparent; }
+.splash-critical {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0c0a09;
+}
+html:not(.dark) .splash-critical { background: #fff7ed; }
+@media (min-width: 768px) {
+  .splash-critical { display: none; }
+}
+`;
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -101,10 +93,14 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: criticalSplashCss }} />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <Script id="theme-init" strategy="beforeInteractive">
           {themeInitScript}
         </Script>
+        <SplashScreen />
         <NextIntlClientProvider messages={messages}>
           <Providers>{children}</Providers>
         </NextIntlClientProvider>
