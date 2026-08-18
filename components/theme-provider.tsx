@@ -21,7 +21,7 @@ const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 const STORAGE_KEY = "ironlog-theme";
 
 const THEME_COLORS: Record<Theme, string> = {
-  dark: "#292524",
+  dark: "#0c0a09",
   light: "#fff7ed",
 };
 
