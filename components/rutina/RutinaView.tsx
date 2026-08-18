@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { mutate } from "swr";
-import { Download, GitBranch, LayoutTemplate, Pencil, Plus, Trash2, Upload } from "lucide-react";
+import { ArrowLeftRight, Download, GitBranch, LayoutTemplate, Pencil, Plus, Trash2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
@@ -43,7 +43,10 @@ export function RutinaView() {
     ExerciseRes | "nuevo" | { varianteDe: ExerciseRes } | null
   >(null);
   const [showCatalog, setShowCatalog] = useState<
-    { mode: "variante"; parent: ExerciseRes } | { mode: "exercise" } | null
+    | { mode: "variante"; parent: ExerciseRes }
+    | { mode: "exercise" }
+    | { mode: "cambiar"; exercise: ExerciseRes }
+    | null
   >(null);
   const [showImport, setShowImport] = useState(false);
   const [showTemplates, setShowTemplates] = useState(false);
@@ -141,6 +144,22 @@ export function RutinaView() {
     toast.success(t("created"));
     await mutate(`/api/routines/${effectiveId}`);
     await mutate("/api/routines");
+    setShowCatalog(null);
+  }
+
+  async function handleSwapCatalogExercise(exercise: ExerciseRes, cat: CatalogItem) {
+    const res = await fetch(`/api/routine-exercises/${exercise.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ catalogExerciseId: cat.id }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      toast.error(data?.error ?? t("saveError"));
+      return;
+    }
+    toast.success(t("swapped"));
+    await mutate(`/api/routines/${effectiveId}`);
     setShowCatalog(null);
   }
 
@@ -296,7 +315,13 @@ export function RutinaView() {
       <CatalogoModal
         open={showCatalog !== null}
         onClose={() => setShowCatalog(null)}
-        title = {showCatalog?.mode === "variante" ? t("addVariant") : t("addExercise")}
+        title={
+          showCatalog?.mode === "variante"
+            ? t("addVariant")
+            : showCatalog?.mode === "cambiar"
+              ? t("swapExercise")
+              : t("addExercise")
+        }
         grupoId={
           showCatalog?.mode === "variante"
             ? showCatalog.parent.muscleGroup?.id ?? null
@@ -308,12 +333,26 @@ export function RutinaView() {
                 showCatalog.parent.name,
                 ...(childrenOf.get(showCatalog.parent.id) ?? []).map((h) => h.name),
               ])
-            : undefined
+            : showCatalog?.mode === "cambiar"
+              ? new Set([
+                  showCatalog.exercise.name,
+                  ...dayExercises
+                    .filter((x) =>
+                      showCatalog.exercise.variantOfId == null
+                        ? x.variantOfId === showCatalog.exercise.id
+                        : x.variantOfId === showCatalog.exercise.variantOfId ||
+                          x.id === showCatalog.exercise.variantOfId,
+                    )
+                    .map((x) => x.name),
+                ])
+              : undefined
         }
         textoPersonalizado={t("createCustom")}
         onCrearPersonalizado={() => {
           if (showCatalog?.mode === "variante") {
             setExerciseModal({ varianteDe: showCatalog.parent });
+          } else if (showCatalog?.mode === "cambiar") {
+            setExerciseModal(showCatalog.exercise);
           } else {
             setExerciseModal("nuevo");
           }
@@ -322,7 +361,9 @@ export function RutinaView() {
         onSeleccion={(cat) =>
           showCatalog?.mode === "variante"
             ? handleCreateCatalogVariant(showCatalog.parent, cat)
-            : handleCreateCatalogExercise(cat)
+            : showCatalog?.mode === "cambiar"
+              ? handleSwapCatalogExercise(showCatalog.exercise, cat)
+              : handleCreateCatalogExercise(cat)
         }
       />
 
@@ -608,6 +649,14 @@ export function RutinaView() {
                   <GitBranch className="h-4 w-4" />
                 </button>
                 <button
+                  onClick={() => setShowCatalog({ mode: "cambiar", exercise: e })}
+                  className="pressable flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
+                  aria-label={t("swapExercise")}
+                  title={t("swapExercise")}
+                >
+                  <ArrowLeftRight className="h-4 w-4" />
+                </button>
+                <button
                   onClick={() => setExerciseModal(e)}
                   className="pressable flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
                   aria-label={t("edit")}
@@ -646,6 +695,14 @@ export function RutinaView() {
                       {formatRange(h)} · RIR {h.baseRir} · {formatLoad(h)}
                     </p>
                   </div>
+                  <button
+                    onClick={() => setShowCatalog({ mode: "cambiar", exercise: h })}
+                    className="pressable flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
+                    aria-label={t("swapExercise")}
+                    title={t("swapExercise")}
+                  >
+                    <ArrowLeftRight className="h-4 w-4" />
+                  </button>
                   <button
                     onClick={() => setExerciseModal(h)}
                     className="pressable flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"

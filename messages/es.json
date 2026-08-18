@@ -140,7 +140,9 @@
     "cannotDeleteActive": "La rutina activa no se puede eliminar. Activa primero otra rutina.",
     "renameRoutine": "Renombrar rutina",
     "routineRenamed": "Rutina renombrada",
-    "startDateHint": "Ancla el cálculo de la semana: al cambiarla se reajusta todo (/hoy, /bloque, RIR)."
+    "startDateHint": "Ancla el cálculo de la semana: al cambiarla se reajusta todo (/hoy, /bloque, RIR).",
+    "swapExercise": "Cambiar ejercicio",
+    "swapped": "Ejercicio cambiado"
   },
   "hoy": {
     "loading": "Cargando sesión...",

@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { getSessionUserId } from "@/lib/auth-helpers";
-import { Routine, RoutineExercise } from "@/lib/models";
+import { ExerciseCatalog, Routine, RoutineExercise } from "@/lib/models";
 import { routineExerciseUpdateSchema } from "@/lib/validation";
 import { error, handleApiError, json, unauthorized } from "@/lib/api";
 
@@ -25,7 +25,26 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     if (!exercise) return error("Ejercicio no encontrado", 404);
 
     const body = await req.json();
-    const parsed = routineExerciseUpdateSchema.safeParse(body);
+
+    // Cambiar el ejercicio por otro del catálogo: reemplaza nombre, grupo,
+    // tipo de peso y resetea la carga (movimiento nuevo, progresión nueva).
+    let payload = body;
+    if (typeof body?.catalogExerciseId === "string" && body.catalogExerciseId) {
+      const cat = await ExerciseCatalog.findByPk(body.catalogExerciseId);
+      if (!cat) return error("Ejercicio del catálogo no encontrado", 404);
+      const resto = { ...body };
+      delete resto.catalogExerciseId;
+      payload = {
+        ...resto,
+        name: cat.name,
+        muscleGroupId: cat.muscleGroupId,
+        weightType: cat.weightType,
+        fixedBar: null,
+        currentLoad: 0,
+      };
+    }
+
+    const parsed = routineExerciseUpdateSchema.safeParse(payload);
     if (!parsed.success) {
       return json(
         { error: "Datos inválidos", details: parsed.error.flatten().fieldErrors },
