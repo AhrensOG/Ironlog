@@ -1,7 +1,14 @@
 import { getTranslations } from "next-intl/server";
+import { redirect } from "next/navigation";
 import Link from "next/link";
+import { auth } from "@/auth";
 
 export default async function HomePage() {
+  const session = await auth();
+  if (session?.user) {
+    redirect("/hoy");
+  }
+
   const t = await getTranslations("landing");
 
   return (

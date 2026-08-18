@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "IronLog",
     short_name: "IronLog",
     description: "Registra tu entrenamiento y progresa con evidencia científica.",
-    start_url: "/",
+    start_url: "/hoy",
     display: "standalone",
     background_color: "#0c0a09",
     theme_color: "#292524",
