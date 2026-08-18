@@ -12,7 +12,7 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="no-scrollbar fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around overflow-x-auto border-t border-border bg-card/95 px-1 pt-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] backdrop-blur md:hidden">
+    <nav className="no-scrollbar fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around overflow-x-auto border-t border-border bg-card/95 px-1 pt-2 pb-[calc(env(safe-area-inset-bottom)+1rem)] backdrop-blur dark:bg-background md:hidden">
       {navItems
         .filter((item) => item.mobile !== false)
         .map((item) => (
