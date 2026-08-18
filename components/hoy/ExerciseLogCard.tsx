@@ -14,13 +14,13 @@ import { formatWeight, formatRange } from "@/lib/format";
 import { WeightInput } from "./WeightInput";
 
 const ACCION_ICON: Record<string, { color: string; labelKey: string }> = {
-  subirPeso: { color: "text-success", labelKey: "accSubirPeso" },
-  sumarReps: { color: "text-success", labelKey: "accSumarReps" },
-  saltoDoble: { color: "text-success", labelKey: "accSaltoDoble" },
-  mantener: { color: "text-warning", labelKey: "accMantener" },
-  bajarPeso: { color: "text-destructive", labelKey: "accBajarPeso" },
-  protegerLesion: { color: "text-destructive", labelKey: "accProtegerLesion" },
-  descarga: { color: "text-primary", labelKey: "accDescarga" },
+  subirPeso: { color: "text-success", labelKey: "accIncreaseWeight" },
+  sumarReps: { color: "text-success", labelKey: "accAddReps" },
+  saltoDoble: { color: "text-success", labelKey: "accDoubleJump" },
+  mantener: { color: "text-warning", labelKey: "accKeep" },
+  bajarPeso: { color: "text-destructive", labelKey: "accReduceWeight" },
+  protegerLesion: { color: "text-destructive", labelKey: "accProtectInjury" },
+  descarga: { color: "text-primary", labelKey: "accDeload" },
 };
 
 export function ExerciseLogCard({
